@@ -25,6 +25,7 @@ export interface PortfolioProject {
   deliverables?: string[]; images?: ProjectImage[];
   tools?: string[]; // List confirmed design software here when available.
   aiUsage?: string;
+  techStack?: { category: string; items: string[] }[];
   year?: string;
   organization?: string;
   role?: string;
@@ -94,10 +95,17 @@ export const work: PortfolioProject[] = [
   {
     id: 'edufocus', title: 'EduFocus', category: 'Web Development', categories: ['Web Development', 'UI/UX Design'], format: 'Full-stack study platform',
     description: "A learning platform built within a short development period, with multiple study modes, customizable themes, and AI-assisted features.",
-    overview: "Our team developed EduFocus to support flexible, personalized study within a limited timeframe. Learners can select study modes that suit their learning preferences and customize the visual theme. I contributed to the interface, front end, and back end with AI assistance.",
+    overview: "Our team developed EduFocus within a limited timeframe to support flexible, personalized study. Learners can choose from multiple study modes and customize the visual theme. I contributed to the interface, front end, and back end with AI assistance. The web application uses Laravel and PHP, with Blade templates, JavaScript, and Tailwind CSS for the interface, MySQL for data storage, and Vite for asset builds.",
     approach: "The interface groups learning materials and study tools into clear workflows across desktop and mobile. Customizable themes and multiple learning modes give users control over how they access and review content.",
     deliverables: ['Desktop and mobile interface design', 'Front-end development', 'Back-end development', 'AI-assisted development process'],
-    tags: ['Front-End Development', 'Back-End Development', 'UI/UX Design', 'AI-Assisted Development'], technologies: ['React', 'TypeScript', 'Node.js', 'MySQL', 'Tailwind CSS'], image: eduFocus.src, images: [eduFocus], github: '', demo: 'https://edu-focus.infinityfreeapp.com/login', status: 'Full-stack project', featured: true,
+    tags: ['Front-End Development', 'Back-End Development', 'UI/UX Design', 'AI-Assisted Development'], technologies: ['Laravel', 'PHP', 'Blade', 'JavaScript', 'Tailwind CSS', 'MySQL', 'Vite'], image: eduFocus.src, images: [eduFocus], github: '', demo: 'https://edu-focus.infinityfreeapp.com/login', status: 'Full-stack project', featured: true,
+    techStack: [
+      { category: 'Front end', items: ['Blade templates', 'JavaScript', 'Tailwind CSS'] },
+      { category: 'Back end', items: ['Laravel 12', 'PHP 8.2+'] },
+      { category: 'Database', items: ['MySQL'] },
+      { category: 'Build & packages', items: ['Vite', 'npm', 'Composer'] },
+      { category: 'PDF & OCR', items: ['PDF.js', 'Tesseract.js'] },
+    ],
     role: 'Front-End & Back-End Developer · UI/UX Designer', year: '2026', features: ['Multiple learning modes', 'Customizable color themes', 'AI-assisted study workflows', 'Milestone badges & progress tracking'],
     video: { src: assetPath('/assets/projects/edufocus/teaser-browser.mp4'), webm: assetPath('/assets/projects/edufocus/official-teaser.webm'), poster: assetPath('/assets/projects/edufocus/teaser-poster.jpg'), caption: 'The official 30-second EduFocus teaser.', kind: 'teaser', duration: '0:30', width: 1080, height: 1920 },
   },
