@@ -848,7 +848,8 @@ body:has(dialog[open]) .project-visual-float,body:has(dialog[open]) .project-vis
 .graphic-design-gallery-wrapper .showcase-card:is(:hover,:focus-visible) .project-float{transform:perspective(1000px) translateY(-5px) rotateX(var(--pointer-y,0deg)) rotateY(var(--pointer-x,0deg)) scale(1.025)}
 .graphic-design-gallery-wrapper .showcase-title{font-size:clamp(23px,2.1vw,29px);min-height:2.5em;letter-spacing:-.8px;text-wrap:balance}
 .graphic-design-gallery-wrapper .showcase-format{color:#bcbcbc;font-size:12px}
-.about-editorial{position:relative;background:radial-gradient(ellipse at 0 30%,#b9aeff08,transparent 55%)}
+/* Fade the ambient tint to transparent on every edge, including the left gutter. */
+.about-editorial{position:relative;background:radial-gradient(ellipse closest-side at 50% 50%,#b9aeff08,transparent 100%)}
 .about-story>p{font-size:15px;line-height:1.9;color:#b6b6b6}
 .about-story .social-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}
 .about-story .social-links a{display:inline-flex;align-items:center;gap:8px;width:auto;min-height:44px;padding:10px 13px;border:1px solid #ffffff21;border-radius:24px;color:#d3d3d3;font-size:11px;transition:border-color .3s,color .3s,box-shadow .3s}
