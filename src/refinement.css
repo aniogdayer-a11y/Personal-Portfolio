@@ -683,7 +683,9 @@ body:has(dialog[open]) .project-visual-float,body:has(dialog[open]) .project-vis
 .projects-content-page{padding-top:55px;padding-bottom:48px}
 .projects-content-page>.page-heading{margin-bottom:38px}
 .projects-content-page .project-toolbar{margin-bottom:36px;scroll-margin-top:115px}
-.project-category-stage{position:relative;overflow:clip;overflow-anchor:none;padding:12px 0 15px}
+/* The gallery owns its scroll clipping and edge fades. Clipping this wrapper
+   cuts those fades and the artwork glow off at the content gutter. */
+.project-category-stage{position:relative;overflow:visible;overflow-anchor:none;padding:12px 0 15px}
 .project-category-view{min-height:0;animation:none;opacity:1;translate:0 0;transition:opacity .13s ease,translate .18s var(--ease-out)}
 .project-category-stage[data-phase=leaving]>.project-category-view{opacity:0;translate:0 -5px;pointer-events:none}
 .project-category-stage[data-phase=entering]>.project-category-view{animation:category-enter .38s var(--ease-out) both}
