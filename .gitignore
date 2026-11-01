@@ -1,0 +1,32 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+tmp/
+outputs/
+# Keep the full user-provided recording local; publish the optimized gameplay excerpt.
+references/The last ender.mp4
+references/EduFocus_Official_Teaser_30s.mp4
+.sites-runtime/
+.sites-checkout*/
+*.zip
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
