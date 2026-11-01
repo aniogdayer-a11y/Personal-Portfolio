@@ -6,6 +6,20 @@
 [data-reveal=pending]{opacity:0;translate:0 24px}
 [data-reveal=visible]{opacity:1;translate:0 0}
 [data-reveal]:focus-within{opacity:1;translate:0 0;transition:none}
+/* Reference-inspired text entrances on portfolio pages; Home owns its own motion. */
+.portfolio-shell:not(.home-shell) .motion-title{display:inline-block;max-width:100%;vertical-align:top}
+.motion-word-mask{display:inline-block;vertical-align:top;overflow:clip;padding-bottom:.16em;margin-bottom:-.16em}
+.motion-word{display:inline-block;transform-origin:50% 100%}
+.portfolio-shell:not(.home-shell) [data-text-reveal]:not(.motion-title){transition:opacity .75s var(--ease-out) var(--copy-delay,0ms),translate .85s var(--ease-out) var(--copy-delay,0ms)}
+.portfolio-shell:not(.home-shell) [data-text-reveal=pending]:not(.motion-title){opacity:0;translate:0 22px}
+.portfolio-shell:not(.home-shell) [data-text-reveal=visible]:not(.motion-title){opacity:1;translate:0 0}
+.motion-title[data-text-reveal=pending] .motion-word{opacity:0;transform:translateY(112%) rotate(2deg)}
+.motion-title[data-text-reveal=visible] .motion-word{animation:copy-word-arrive .95s var(--ease-out) both;animation-delay:calc(70ms + var(--word-order)*55ms)}
+@keyframes copy-word-arrive{from{opacity:0;transform:translateY(112%) rotate(2deg)}to{opacity:1;transform:translateY(0) rotate(0)}}
+[data-text-reveal]:focus-within{opacity:1!important;translate:none!important;transition:none!important}
+[data-text-reveal]:focus-within .motion-word{animation:none!important;opacity:1;transform:none}
+@media(max-width:759px){.portfolio-shell:not(.home-shell) [data-text-reveal=pending]:not(.motion-title){translate:0 16px}}
+@media print{[data-reveal],[data-text-reveal],.motion-word{opacity:1!important;translate:none!important;transform:none!important;animation:none!important}}
 .showcase-slide:focus-within{transition:none!important}
 .project-gallery>.project-card:nth-child(even),.credential-gallery>article:nth-child(2){transition-delay:65ms}
 

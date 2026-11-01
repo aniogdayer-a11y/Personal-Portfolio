@@ -1,4 +1,5 @@
 import { ProjectArtwork } from './ProjectArtwork';
+import { MotionText } from './MotionText';
 import { routeHref } from '../utils/sitePaths';
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
@@ -29,7 +30,7 @@ export function ProjectDetail({ project, navigate }: { project: PortfolioProject
 
   return <div className="content-page project-detail">
     <a href={routeHref('/projects')} className="text-link" onClick={event => routeClick(event, '/projects', navigate)}><ArrowLeft size={16} /> Back to projects</a>
-    <div className="page-heading"><span className="eyebrow">02 / {project.category.toUpperCase()}</span><h1>{project.title.replace(/\.$/, '')}<span className="period">.</span></h1><p>{project.description}</p></div>
+    <div className="page-heading"><span className="eyebrow">02 / {project.category.toUpperCase()}</span><h1><MotionText>{project.title.replace(/\.$/, '')}<span className="period">.</span></MotionText></h1><p>{project.description}</p></div>
 
     {images.length > 0 && <figure className={`project-artwork-hero${project.id === 'bsit-student-frames' ? ' frame-project-hero' : ''}`}><button className="artwork-open" onClick={() => setViewing(0)} aria-label={`View ${images[0].label} in full resolution`}>{project.id === 'aws-sbg-jru' ? <ProjectVisual src={images[0].src} alt={images[0].alt} eager /> : <ProjectArtwork className="detail-preview" asset={images[0]} eager />}<span className="artwork-open-label"><Expand size={15} /> View full size</span></button><figcaption>{images[0].label}</figcaption></figure>}
 

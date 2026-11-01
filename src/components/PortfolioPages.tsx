@@ -1,4 +1,5 @@
 import { routeHref } from '../utils/sitePaths';
+import { MotionText } from './MotionText';
 import { useState } from 'react';
 import type { MouseEvent, ReactNode } from 'react';
 import { ArrowUpRight, ArrowRight, Mail, GraduationCap, MapPin, FileText, Clock3, Code2, Award, Check, Copy, Search, ExternalLink } from 'lucide-react';
@@ -35,7 +36,7 @@ export function SocialLinks({ labeled = false }: { labeled?: boolean }) {
   return <div className="social-links"><a href={portfolio.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Dayer on LinkedIn"><Linkedin size={19} />{labeled && <span>LinkedIn</span>}</a><a href={`mailto:${portfolio.email}`} aria-label="Email Dayer"><Mail size={19} />{labeled && <span>Email</span>}</a><a href={portfolio.github} target="_blank" rel="noopener noreferrer" aria-label="Dayer on GitHub"><Github size={19} />{labeled && <span>GitHub</span>}</a></div>;
 }
 function PageHeading({ number, label, title, children }: { number: string; label: string; title: string; children: ReactNode }) {
-  return <div className="page-heading"><span className="page-index" aria-hidden="true" data-parallax="0.12">{number}</span><span className="eyebrow">{number} / {label}</span><h1>{title}<span className="period">.</span></h1><p>{children}</p></div>;
+  return <div className="page-heading"><span className="page-index" aria-hidden="true" data-parallax="0.12">{number}</span><span className="eyebrow">{number} / {label}</span><h1><MotionText>{title}<span className="period">.</span></MotionText></h1><p>{children}</p></div>;
 }
 function EmptyState({ icon, title, children }: { icon: ReactNode; title: string; children: ReactNode }) {
   return <div className="empty-state"><span className="empty-icon">{icon}</span><h2>{title}</h2><p>{children}</p><span className="small-label">PORTFOLIO COLLECTION</span></div>;
@@ -43,7 +44,7 @@ function EmptyState({ icon, title, children }: { icon: ReactNode; title: string;
 export function ProfilePage({ navigate }: { navigate: Navigate }) {
   return <>
     <section className="profile-hero" data-parallax-scene>
-      <div className="profile-text"><span className="eyebrow"><i /> DESIGNER & DEVELOPER / PHILIPPINES</span><h1>Hi, I’m Dayer<span className="period">.</span><br /><span className="subtle-title">Designing ideas.<br />Building experiences.</span></h1><div className="profile-disciplines"><span>Front-End Development</span><span>UI/UX</span><span>Graphic Design</span></div><p className="intro-description">{portfolio.intro}</p><div className="hero-actions"><RouteLink className="button button-dark" to="/projects" navigate={navigate}>View selected projects <ArrowUpRight size={18} /></RouteLink></div><div className="hero-caption"><span className="status-dot" /> COLLEGE STUDENT <span className="caption-separator">/</span> SCROLL TO EXPLORE</div></div>
+      <div className="profile-text"><span className="eyebrow"><i /> DESIGNER & DEVELOPER / PHILIPPINES</span><h1><MotionText>Hi, I’m Dayer<span className="period">.</span><br /><span className="subtle-title">Designing ideas.<br />Building experiences.</span></MotionText></h1><div className="profile-disciplines"><span>Front-End Development</span><span>UI/UX</span><span>Graphic Design</span></div><p className="intro-description">{portfolio.intro}</p><div className="hero-actions"><RouteLink className="button button-dark" to="/projects" navigate={navigate}>View selected projects <ArrowUpRight size={18} /></RouteLink></div><div className="hero-caption"><span className="status-dot" /> COLLEGE STUDENT <span className="caption-separator">/</span> SCROLL TO EXPLORE</div></div>
       <div className="profile-visual profile-visual--blend"><CreativePortrait><Portrait className="profile-portrait profile-portrait--blend" /></CreativePortrait></div>
     </section>
     <section className="about-editorial"><div><span className="eyebrow">PROFILE</span><h2>Design and<br /> development.</h2></div><div className="about-story"><p>{portfolio.about}</p><SocialLinks labeled /></div><div className="education-note"><GraduationCap size={24} strokeWidth={1.5} /><span className="small-label">EDUCATION</span><ol className="education-history">{education.map(item => <li key={item.school}><h3>{item.school}</h3><p className="education-period">{item.period}</p>{item.location && <><p>{item.course}</p><span className="education-location"><MapPin size={13} /> {item.location}</span></>}</li>)}</ol><ResumeLink /></div></section>
