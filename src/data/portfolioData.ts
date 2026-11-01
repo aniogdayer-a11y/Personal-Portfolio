@@ -136,7 +136,8 @@ export const work: PortfolioProject[] = [
     approach: "The team combined editorial layouts and organizational branding with a resource-conscious construction approach. Coordinated print materials helped visitors identify the chapter and explore its activities.",
     deliverables: ['Collaborative Creatives Team booth build', 'Custom posters and newspaper-inspired layouts', 'Organizational branding', 'Decorations using recyclable materials'],
     tags: ['Sustainable design', 'Event branding', 'Team collaboration'], technologies: [], image: boothPhoto.src, images: [boothPhoto], github: '', demo: '', status: 'Creatives Team project', featured: false,
-    role: 'Creatives Team Member', year: '2026', organization: 'AWS Student Builder Group — JRU', tools: graphicDesignTools, aiUsage: graphicDesignAiUsage,
+    role: 'Creatives Team Member', year: '2026', organization: 'AWS Student Builder Group — JRU', tools: ['AI (ideation only)'],
+    aiUsage: 'AI supported brainstorming and concept exploration only. The Creatives Team collaboratively designed and assembled the booth using recyclable materials.',
   },
   {
     id: 'zodiac-says', title: 'Zodiac Says', category: 'Graphic Design', format: 'Social media design series',
