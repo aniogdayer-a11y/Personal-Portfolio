@@ -7,6 +7,7 @@ import { usePageMotion } from './hooks/usePageMotion';
 import { useAmbientMotion } from './hooks/useAmbientMotion';
 import { useMotionPreference } from './hooks/useMotionPreference';
 import { useTheme } from './hooks/useTheme';
+import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { readRoute, routeHref } from './utils/sitePaths';
 
 const pages = [
@@ -27,12 +28,13 @@ export function App() {
   const reduced = !motionEnabled;
   const main = useRef<HTMLElement>(null);
   const header = useRef<HTMLElement>(null);
+  const resetScroll = useSmoothScroll(route);
   const navigate = useCallback((path: string) => {
     if (path === '/' || path === '/home') writeSession(false);
     else writeSession(true);
     if (readRoute() !== path) history.pushState(null, '', routeHref(path));
-    setRoute(path); setMenuOpen(false); window.scrollTo({ top: 0, behavior: 'instant' });
-  }, []);
+    resetScroll(); setRoute(path); setMenuOpen(false);
+  }, [resetScroll]);
   useEffect(() => {
     const pop = () => { setRoute(readRoute()); setMenuOpen(false); };
     window.addEventListener('popstate', pop);
@@ -43,8 +45,6 @@ export function App() {
     const active = pages.find(([url]) => route.startsWith(url));
     document.title = route === '/' || route === '/home' ? 'Dayer Aniog — Design & Development' : `${route === '/profile' ? 'About' : active?.[1] ?? 'Page not found'} — Dayer Aniog`;
     if (route !== '/' && route !== '/home') { writeSession(true); main.current?.focus({ preventScroll: true }); }
-    const frame = requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'instant' }));
-    return () => cancelAnimationFrame(frame);
   }, [route]);
   useEffect(() => { document.body.style.overflow = menuOpen ? 'hidden' : ''; return () => { document.body.style.overflow = ''; }; }, [menuOpen]);
   useEffect(() => {
