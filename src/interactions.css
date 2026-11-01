@@ -1,0 +1,119 @@
+/* A little movement, visible depth, and artwork-led hover previews. */
+.ambient-motion-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:8px 12px;border:1px solid #ffffff1c;border-radius:24px;font-size:10px;color:#b6b6b6;background:#0a0a0a;cursor:pointer;transition:color .3s,border-color .3s}
+.ambient-motion-toggle:hover{color:#fff;border-color:#ffffff50}
+.toolkit-float{display:block;flex-shrink:0;animation:app-float 6.8s ease-in-out infinite;animation-delay:calc(var(--tool-index)*-1.15s);animation-play-state:paused}
+.toolkit-float[data-motion-visible=true]{animation-play-state:running}
+.creative-tool-list li:hover .toolkit-float{animation-play-state:paused}
+.creative-tool-list li:hover .tool-icon{transform:perspective(400px) rotateY(-10deg) rotateX(10deg) translateY(-3px);box-shadow:0 5px 0 #17191d,0 15px 20px #0009,0 0 24px rgb(var(--tool-light)/.25)}
+.portrait-tools li{animation:app-float 5.4s ease-in-out infinite;animation-delay:calc(var(--tool-index)*-1s);animation-play-state:paused}
+.portrait-tools[data-motion-visible=true] li{animation-play-state:running}
+.portrait-tools li:has(a:hover),.portrait-tools li:focus-within{animation-play-state:paused}
+@keyframes app-float{0%,100%{translate:0 4px}50%{translate:0 -12px}}
+.portrait-tools .tool-icon{width:72px;height:72px;border-radius:20px;transform:perspective(450px) rotateX(19deg) rotateY(-26deg);box-shadow:0 2px 0 #535960,0 5px 0 #30363c,0 10px 0 #14191e,0 15px 12px #0009,0 24px 30px #0008,0 0 17px rgb(var(--tool-light)/.25)}
+.portrait-tools li:nth-child(even) .tool-icon{transform:perspective(450px) rotateX(15deg) rotateY(24deg)}
+.tool-icon-edge{position:absolute;inset:0;border-radius:inherit;background:linear-gradient(140deg,#44484c,#1c1e22 45%,#101113);border:1px solid #ffffff20;transform:translateZ(-8px) translateY(5px);pointer-events:none}
+.tool-icon-face{position:absolute;inset:0;display:grid;place-items:center;border-radius:inherit;background:inherit;border:1px solid #ffffff32;box-shadow:inset 2px 2px 3px #ffffff30,inset -2px -3px 4px #0009;transform:translateZ(5px)}
+.tool-icon-face:after{content:'';position:absolute;inset:3px;border-radius:inherit;background:linear-gradient(135deg,#ffffff19,transparent 45%,#0002);pointer-events:none}
+.tool-icon-face img{transform:translateZ(11px);backface-visibility:hidden}
+.portrait-tools a:hover .tool-icon,.portrait-tools a:focus-visible .tool-icon{transform:perspective(450px) rotateX(var(--icon-rx,10deg)) rotateY(var(--icon-ry,-10deg)) translateZ(13px);box-shadow:0 2px 0 #626c76,0 6px 0 #35404b,0 11px 0 #17212a,0 20px 22px #0009,0 0 28px rgb(var(--tool-light)/.55),0 0 65px rgb(var(--tool-light)/.23)}
+.portrait-motion-toggle,.preview-motion-toggle{display:inline-flex!important;min-height:38px;gap:8px}
+.portrait-motion-toggle{display:flex!important;width:fit-content;margin:8px auto 0;border:1px solid #333;border-radius:24px;padding:7px 12px;color:#bcbcbc}
+.preview-motion-toggle{border-bottom:1px solid #333;padding:8px 0}
+
+.project-float{display:block;position:relative;animation:artwork-float 5.6s ease-in-out infinite;animation-delay:var(--float-delay,0s);animation-play-state:paused}
+@keyframes artwork-float{0%,100%{translate:0 5px}50%{translate:0 -9px}}
+.project-float[data-motion-visible=true]{animation-play-state:running}
+.showcase-slide:focus-within .project-float,.design-showcase[data-motion-playing=false] .project-float{animation-play-state:paused}
+.showcase-slide:focus-within{z-index:3}
+.showcase-poster{overflow:visible}
+.showcase-poster:before{content:'';position:absolute;inset:12% 9%;z-index:-1;border-radius:24%;opacity:0;transition:opacity .5s ease;pointer-events:none}
+.showcase-card:focus-visible .showcase-poster:before{opacity:1}
+.poster-peek{position:absolute;z-index:5;right:1%;top:26%;width:42%;display:block;padding:6px;background:#151515;border:1px solid #ffffff24;border-radius:4px;box-shadow:0 12px 30px #000b;opacity:0;transform:translateX(-14px) rotate(-4deg) scale(.85);transition:opacity .45s ease,transform .7s var(--ease-out);pointer-events:none}
+.poster-peek>img{width:100%;height:auto;aspect-ratio:1;object-fit:contain;background:#0c0c0c}
+.poster-peek>span{display:flex;align-items:center;gap:5px;color:#ddd;font-size:9px;padding:8px 3px 3px;line-height:1.4}
+.poster-peek>span>span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.poster-peek svg{flex-shrink:0}
+.showcase-card:focus-visible .poster-peek{opacity:1;transform:translateX(30%) rotate(5deg) scale(1);pointer-events:auto}
+.showcase-slide:last-child .poster-peek{right:auto;left:1%;transform:translateX(14px) rotate(4deg) scale(.85)}
+.showcase-slide:last-child .showcase-card:focus-visible .poster-peek{transform:translateX(-30%) rotate(-5deg) scale(1)}
+.showcase-track.is-dragging .poster-peek{opacity:0!important;pointer-events:none!important}
+.showcase-track.is-dragging .showcase-poster:before{opacity:0!important}
+.project-image,.featured-project>img,.booth-photograph img{animation:artwork-float 6s ease-in-out infinite;animation-play-state:paused}
+.project-card:nth-child(even) .project-image{animation-delay:-2.2s}
+.featured-project:nth-of-type(even)>img{animation-delay:-1.8s}
+.project-image[data-motion-visible=true],.featured-project>img[data-motion-visible=true],.booth-photograph img[data-motion-visible=true]{animation-play-state:running}
+.project-image{transition:box-shadow .6s ease}
+.project-card:focus-visible .project-image{animation-play-state:paused;box-shadow:0 0 28px #ffffff13}
+.featured-project:focus-visible>img,.booth-photograph:focus-visible img{animation-play-state:paused}
+@media(hover:hover) and (pointer:fine){
+ .showcase-card:hover .project-float{animation-play-state:paused}
+ .showcase-card:hover .showcase-poster:before{opacity:1}
+ .showcase-card:hover .poster-peek{opacity:1;transform:translateX(30%) rotate(5deg) scale(1);pointer-events:auto}
+ .showcase-slide:last-child .showcase-card:hover .poster-peek{transform:translateX(-30%) rotate(-5deg) scale(1)}
+ .project-card:hover .project-image{animation-play-state:paused;box-shadow:0 0 28px #ffffff13}
+ .featured-project:hover>img,.booth-photograph:hover img{animation-play-state:paused}
+}
+@media(hover:none){.poster-peek{display:none}.showcase-poster:before{display:none}}
+@media(max-width:759px){
+ .portrait-tools .tool-icon{width:53px;height:53px;border-radius:15px}
+ .project-float{animation-duration:6.5s}
+ .poster-peek>span{font-size:8px}
+}
+/* One explicit pause control stops CSS motion throughout the portfolio. */
+:root[data-motion=off] *,:root[data-motion=off] *:before,:root[data-motion=off] *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+:root[data-motion=off] .project-float,:root[data-motion=off] .project-image,:root[data-motion=off] .featured-project>img,:root[data-motion=off] .booth-photograph img{translate:none}
+:root[data-page-hidden=true] *{animation-play-state:paused!important}
+
+/* Softly lit, layered app tiles. Blur stays behind the original source marks. */
+.tool-icon{--tool-light:178 198 255;isolation:auto}
+.tool-icon--canva{--tool-light:38 237 224}
+.tool-icon--picsart{--tool-light:204 92 255}
+.tool-icon--figma{--tool-light:236 240 255}
+.tool-icon--photoshop{--tool-light:52 190 255}
+.tool-icon--ibispaint{--tool-light:147 159 255}
+.tool-icon--tiled{--tool-light:135 151 255}
+.tool-icon-aura{position:absolute;inset:-55%;border-radius:50%;background:radial-gradient(ellipse,rgb(var(--tool-light)/.5),rgb(var(--tool-light)/.16) 35%,transparent 68%);transform:translateZ(-24px);opacity:.26;filter:blur(6px);pointer-events:none;transition:opacity .6s ease,scale .8s var(--ease-out)}
+.portrait-tools .tool-icon-aura{opacity:.62}
+.portrait-tools a:hover .tool-icon-aura,.portrait-tools a:focus-visible .tool-icon-aura{opacity:1;scale:1.15}
+:is(.portrait-tools,.creative-tool-list) .tool-icon-face{transform:translateZ(8px);transform-style:preserve-3d;border-color:rgb(var(--tool-light)/.6);box-shadow:inset 2px 3px 7px #ffffff38,inset -2px -4px 7px #000a,0 0 9px rgb(var(--tool-light)/.18)}
+:is(.portrait-tools,.creative-tool-list) .tool-icon-edge{transform:translateZ(-10px) translateY(6px);background:linear-gradient(135deg,rgb(var(--tool-light)/.65),#242934 42%,#090d13);border-color:rgb(var(--tool-light)/.35)}
+:is(.portrait-tools,.creative-tool-list) .tool-icon-face:after{inset:0;background:linear-gradient(138deg,#ffffff38,transparent 38%,transparent 64%,#ffffff0a);border-top:1px solid #ffffff65;filter:blur(.45px)}
+.portrait-tools .tool-icon-face img{transform:translateZ(14px);max-width:80%;max-height:80%}
+:is(.portrait-tools,.creative-tool-list) .tool-icon--canva .tool-icon-face{background:linear-gradient(145deg,#236b79,#123544 52%,#161c32)}
+:is(.portrait-tools,.creative-tool-list) .tool-icon--photoshop .tool-icon-face{background:linear-gradient(145deg,#164d68,#062338 65%,#061522)}
+:is(.portrait-tools,.creative-tool-list) .tool-icon--picsart .tool-icon-face{background:linear-gradient(145deg,#473157,#21172f 65%,#110e1b)}
+:is(.portrait-tools,.creative-tool-list) .tool-icon--figma .tool-icon-face{background:linear-gradient(145deg,#414554,#222633 60%,#10131d);border-color:#9ba4c080}
+.portrait-tools .tool-icon--figma .tool-icon-face img{width:31px;height:44px;filter:drop-shadow(0 3px 2px #0004)}
+:is(.portrait-tools,.creative-tool-list) .tool-icon--ibispaint .tool-icon-face{background:linear-gradient(145deg,#36394f,#171b2b 65%,#0c101b)}
+:is(.portrait-tools,.creative-tool-list) .tool-icon--tiled .tool-icon-face{background:linear-gradient(145deg,#515b8b,#252d50 55%,#10172c)}
+.portrait-tools .tool-icon--picsart img,.portrait-tools .tool-icon--ibispaint img{width:54px;height:54px}
+.portrait-tools .tool-icon--tiled img{width:53px;height:53px}
+.portrait-tools .tool-icon--canva img{width:49px;height:49px}
+.portrait-tools .tool-icon--photoshop img{width:45px;height:45px}
+.portrait-tools li:nth-child(1){left:0;top:16%}
+.portrait-tools li:nth-child(2){right:-1%;top:25%}
+.portrait-tools li:nth-child(3){left:-2%;top:46%}
+.portrait-tools li:nth-child(4){right:-2%;top:57%}
+.portrait-tools li:nth-child(5){left:18%;top:-1%}
+.portrait-tools li:nth-child(6){right:12%;top:0}
+@media(max-width:759px){
+ .portrait-tools .tool-icon-aura{inset:-40%;opacity:.6}
+ .portrait-tools .tool-icon-face img{max-width:74%;max-height:74%}
+ .portrait-tools .tool-icon--figma .tool-icon-face img{width:24px;height:34px}
+ .portrait-tools li:nth-child(1){left:2%;top:16%}
+ .portrait-tools li:nth-child(2){right:0;top:26%}
+ .portrait-tools li:nth-child(3){left:0;top:46%}
+ .portrait-tools li:nth-child(4){right:0;top:57%}
+ .portrait-tools li:nth-child(5){left:18%;top:0}
+ .portrait-tools li:nth-child(6){right:13%;top:0}
+}
+
+/* A paused toolkit uses its resting position. */
+:root[data-motion=off] .toolkit-float{translate:none}
+
+/* A soft secondary rim suggests the stacked body in the reference. */
+.tool-icon-edge:after{content:"";position:absolute;inset:3px -2px -4px 2px;border-radius:inherit;border:1px solid rgb(var(--tool-light)/.22);box-shadow:0 5px 10px #0009;pointer-events:none}
+.creative-tool-list .tool-icon{transform:perspective(420px) rotateX(12deg) rotateY(-15deg);box-shadow:0 2px 0 #434957,0 5px 0 #252a34,0 8px 0 #141921,0 14px 18px #0008}
+.creative-tool-list .tool-icon-aura{inset:-38%;opacity:.28;filter:blur(4px)}
+.creative-tool-list li:hover .tool-icon-aura{opacity:.55;scale:1.08}
+@media(max-width:759px){.portrait-tools .tool-icon-aura{filter:blur(4px)}.creative-tool-list .tool-icon{box-shadow:0 2px 0 #434957,0 4px 0 #252a34,0 6px 0 #141921,0 10px 14px #0008}}

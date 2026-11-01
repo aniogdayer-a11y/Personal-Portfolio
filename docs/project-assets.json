@@ -1,0 +1,122 @@
+[
+    {
+        "source":  "UI \u0026 UX\\AWS SBG JRU.png",
+        "original":  "/assets/projects/originals/aws-sbg-jru.png",
+        "preview":  "/assets/projects/previews/aws-sbg-jru.jpg",
+        "width":  1440,
+        "height":  1024,
+        "sha256":  "5BC3A0DA3DB3CD6198732945FC6F9526E31C6FA3FF1B128BAE36F7DD06E9201B",
+        "originalBytes":  1917125,
+        "previewBytes":  350771
+    },
+    {
+        "source":  "UI \u0026 UX\\EduFocus.png",
+        "original":  "/assets/projects/originals/edufocus.png",
+        "preview":  "/assets/projects/previews/edufocus.jpg",
+        "width":  1440,
+        "height":  1024,
+        "sha256":  "45CF09798FF765E2C0A2D18DC2BD972567F31E8222C24FC17BC2A6813BDFD152",
+        "originalBytes":  1078330,
+        "previewBytes":  186475
+    },
+    {
+        "source":  "Pubmats\\Even Pubmat\\Event Pubmat Proper (4).png",
+        "original":  "/assets/projects/originals/cloud-grand-prix-announcement.png",
+        "preview":  "/assets/projects/previews/cloud-grand-prix-announcement.jpg",
+        "width":  1080,
+        "height":  1080,
+        "sha256":  "E296B22FAB209FA04CE7E17D984123E7C19929FA42C2EBCC24073E29BF7792C8",
+        "originalBytes":  2260534,
+        "previewBytes":  371301
+    },
+    {
+        "source":  "Pubmats\\Even Pubmat\\Event Pubmat Proper (Registration Reminder) (1).png",
+        "original":  "/assets/projects/originals/cloud-grand-prix-registration.png",
+        "preview":  "/assets/projects/previews/cloud-grand-prix-registration.jpg",
+        "width":  1080,
+        "height":  1080,
+        "sha256":  "DAC6A79BAA8A0235E82CA57D1583D1F2B3399822B6BA29E1725E74E7C8551296",
+        "originalBytes":  2382849,
+        "previewBytes":  454831
+    },
+    {
+        "source":  "Pubmats\\Even Pubmat\\Event Pubmat Proper (Reloaded) (1).png",
+        "original":  "/assets/projects/originals/cloud-grand-prix-reloaded-01.png",
+        "preview":  "/assets/projects/previews/cloud-grand-prix-reloaded-01.jpg",
+        "width":  1080,
+        "height":  1080,
+        "sha256":  "BFB74A869C3A1934A06439783EE6DA9378D1BDED3A2E6E0DDC7AB508D151A104",
+        "originalBytes":  2272880,
+        "previewBytes":  374281
+    },
+    {
+        "source":  "Pubmats\\Even Pubmat\\Event Pubmat Proper (Reloaded) (2).png",
+        "original":  "/assets/projects/originals/cloud-grand-prix-reloaded-02.png",
+        "preview":  "/assets/projects/previews/cloud-grand-prix-reloaded-02.jpg",
+        "width":  1080,
+        "height":  1080,
+        "sha256":  "DB7B544599E0801CCE73AC7F9510462D0445543BD178E9A8C4EF1262052D45A5",
+        "originalBytes":  2272880,
+        "previewBytes":  374277
+    },
+    {
+        "source":  "Pubmats\\Zodiac Says\\733756905_122203674248579104_3015836937056937364_n.jpg",
+        "original":  "/assets/projects/originals/zodiac-cancer-s3.jpg",
+        "preview":  "/assets/projects/previews/zodiac-cancer-s3.jpg",
+        "width":  1000,
+        "height":  1000,
+        "sha256":  "2C9957517D8909BDCAAE2DBCAF38C5C885AD00C3D8989D7AF8F91FC1133023C2",
+        "originalBytes":  101099,
+        "previewBytes":  148805
+    },
+    {
+        "source":  "Pubmats\\Zodiac Says\\733771275_122203674464579104_2883458471717878914_n.jpg",
+        "original":  "/assets/projects/originals/zodiac-sagittarius-amplify.jpg",
+        "preview":  "/assets/projects/previews/zodiac-sagittarius-amplify.jpg",
+        "width":  1000,
+        "height":  1000,
+        "sha256":  "8ACEFF42938327E63EC589DF746DE4102240C903B4A3AC680EF0E24594F33966",
+        "originalBytes":  98222,
+        "previewBytes":  144449
+    },
+    {
+        "source":  "Pubmats\\Zodiac Says\\735687491_122203674206579104_3330347011414265523_n.jpg",
+        "original":  "/assets/projects/originals/zodiac-gemini-eventbridge.jpg",
+        "preview":  "/assets/projects/previews/zodiac-gemini-eventbridge.jpg",
+        "width":  1000,
+        "height":  1000,
+        "sha256":  "A35B3AFA1E591F198FCDB0CE5B433E566B25EDB32B83A0E757363030FA2A0066",
+        "originalBytes":  97010,
+        "previewBytes":  142983
+    },
+    {
+        "source":  "Pubmats\\FRAMES FOR BSIT-BA \u0026 BSIT (pa-cutout ako).png",
+        "original":  "/assets/projects/originals/bsit-student-frames.png",
+        "preview":  "/assets/projects/previews/bsit-student-frames.jpg",
+        "width":  5875,
+        "height":  3189,
+        "sha256":  "10CB7CA39A9BC595A5FBB83BDA1E8A3E3932148420AF68413113E20E7594890C",
+        "originalBytes":  14423263,
+        "previewBytes":  325062
+    },
+    {
+        "source":  "Pubmats\\RSO FLAG (2).png",
+        "original":  "/assets/projects/originals/aws-sbg-flag.png",
+        "preview":  "/assets/projects/previews/aws-sbg-flag.jpg",
+        "width":  1102,
+        "height":  801,
+        "sha256":  "C9F11E5409E4BD272176692C1C7AA7047B15661D95B6A8C28F8D424B3DDD00A4",
+        "originalBytes":  1265700,
+        "previewBytes":  186423
+    },
+    {
+        "source":  "Pubmats\\Countdown Pubmat2 - Day 6.png",
+        "original":  "/assets/projects/originals/tech-countdown.png",
+        "preview":  "/assets/projects/previews/tech-countdown.jpg",
+        "width":  1089,
+        "height":  1089,
+        "sha256":  "6E4E137A657EF9DD4561AFB54CB3B8EDB0E264D7BFF37D80EF67C75728CE3355",
+        "originalBytes":  1083384,
+        "previewBytes":  163460
+    }
+]

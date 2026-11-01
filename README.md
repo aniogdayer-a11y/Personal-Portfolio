@@ -21,7 +21,13 @@ The header's sun/moon button switches between dark (default) and light mode. The
 
 Update `src/data/portfolioData.ts`. It contains public contact details, project records, skills, certificates, and milestones. Nine unique projects appear across Design, Web Development, and Graphic Design. EduFocus belongs to both Design and Web Development. The Last Ember is the third Design entry, credited as collaborative map-design support in Tiled. See `docs/tiled-project-and-loading.md` for its media provenance.
 
-The résumé download is enabled on About and Contact. The original `Resume/RESUME Dayer.pdf` is copied unchanged to `public/assets/dayer-aniog-resume.pdf`; replace that public PDF when updating the résumé.
+The résumé download is enabled on About and Contact. The latest `Resume/Resume Dayer (2).pdf` is copied unchanged to `public/assets/dayer-aniog-resume.pdf`; replace that public PDF when updating the résumé.
+
+## GitHub Pages
+
+`.github/workflows/pages.yml` installs dependencies, runs tests, builds the app, and publishes **dist** on every push to `main`. In repository Settings → Pages, select **GitHub Actions** as the publishing source. The build sets `PAGES_BASE_PATH=/Personal-Portfolio/` so JavaScript, styles, fonts, images, video, and résumé downloads resolve beneath the repository URL.
+
+The deployed site uses hash routes such as `/Personal-Portfolio/#/projects/edufocus`, which support refreshes and direct links on GitHub Pages. Local development and root deployments retain `/projects/edufocus` URLs. Uploading the source `index.html` directly without building will not run this Vite application.
 
 ## Routes
 
@@ -35,10 +41,10 @@ The résumé download is enabled on About and Contact. The original `Resume/RESU
 - `src/App.tsx`: history-based routing, shared navigation, session state, motion preferences.
 - `src/index.css`: responsive visual system and motion accommodations.
 
-The card pivots at the buckle; two lanyard ribbons terminate at that attachment point. Mouse and touch pulls must exceed 80 physical pixels and then release; small and sideways gestures do not activate entry. Pointer cancellation disarms the switch. Enter/Space on the ID and the “About Me” button provide alternatives. Sound defaults off.
+The card pivots at the buckle; two lanyard ribbons terminate at that attachment point. Mouse and touch pulls must exceed 80 physical pixels and then release; small and sideways gestures do not activate entry. Pointer cancellation disarms the switch. Enter/Space on the ID and the “About Me” button provide alternatives. The Home introduction has no sound control.
 
 ## Verification
 
-`npm test` runs six physics checks. `node --test tests/*.test.mjs` also checks project membership, search, and contribution attribution. `npm run test:browser` connects to a local Chrome DevTools endpoint on port 9225 and a dev server on port 5173. It verifies asset resolution, attachment geometry, dragging, page routing, browser history, direct links, phone layouts, touch, keyboard entry, and explicit effects pause. Screenshots are written under ignored `tmp/qa/`.
+`npm test` runs six physics checks. `node --test tests/*.test.mjs` also checks project membership, search, and contribution attribution. `npm run test:browser` connects to a local Chrome DevTools endpoint on port 9225 and a dev server on port 5173. It verifies asset resolution, attachment geometry, dragging, page routing, browser history, direct links, phone layouts, touch, keyboard entry, and theme switching with always-enabled visual effects. Screenshots are written under ignored `tmp/qa/`.
 
 Assets and their preparation are documented in `docs/asset-notes.md`. Built output is in `dist/`. Hosting identity is in `.openai/hosting.json`.
