@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, ExternalLink, X, ZoomIn, ZoomOut } from 'lucide-react';
 import type { PortfolioProject, ProjectImage } from '../data/portfolioData';
+import { ProjectArtwork } from './ProjectArtwork';
 
 export function ArtworkViewer({ images, initialIndex, title, project, onProjectDetails, onClose }: { images: ProjectImage[]; initialIndex: number; title: string; project?: PortfolioProject; onProjectDetails?: () => void; onClose: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -31,8 +32,8 @@ export function ArtworkViewer({ images, initialIndex, title, project, onProjectD
       <button onClick={() => setZoomed(value => !value)} aria-label={zoomed ? 'Fit artwork to screen' : 'View artwork at original size'} aria-pressed={zoomed}>{zoomed ? <ZoomOut size={19} /> : <ZoomIn size={19} />}</button>
       <a href={asset.original} target="_blank" rel="noopener noreferrer" aria-label="Open original artwork in a new tab"><ExternalLink size={18} /></a><button onClick={onClose} aria-label="Close artwork viewer"><X size={21} /></button>
     </div></div>
-    <div ref={stage} tabIndex={0} aria-label="Artwork canvas. Scroll to explore when viewing at original size." className={`artwork-stage ${zoomed ? 'is-zoomed' : ''}`}><img key={asset.original} src={asset.original} alt={asset.alt} width={asset.width} height={asset.height} /></div>
-    {project && <div className="artwork-context"><dl><div><dt>Category</dt><dd>{project.category}</dd></div>{project.tools?.length ? <div><dt>Design Tools</dt><dd>{project.tools.join(', ')}</dd></div> : null}{project.year && <div><dt>Year</dt><dd>{project.year}</dd></div>}{project.organization && <div><dt>Organization / Client</dt><dd>{project.organization}</dd></div>}</dl><p>{project.description}</p>{onProjectDetails && <button className="text-link" onClick={onProjectDetails}>View project details <ExternalLink size={14} /></button>}</div>}
+    <div ref={stage} tabIndex={0} aria-label="Artwork canvas. Scroll to explore when viewing at original size." className={`artwork-stage ${zoomed ? 'is-zoomed' : ''}`}><ProjectArtwork key={asset.label} asset={asset} original eager /></div>
+    {project && <div className="artwork-context"><dl><div><dt>Category</dt><dd>{project.category}</dd></div>{project.tools?.length ? <div><dt>Design Tools</dt><dd>{project.tools.join(', ')}</dd></div> : null}{project.year && <div><dt>Year</dt><dd>{project.year}</dd></div>}{project.organization && <div><dt>Organization / Client</dt><dd>{project.organization}</dd></div>}</dl><p>{project.description}</p>{project.aiUsage && <p className="design-process-note">{project.aiUsage}</p>}{onProjectDetails && <button className="text-link" onClick={onProjectDetails}>View project details <ExternalLink size={14} /></button>}</div>}
     <div className="artwork-footer"><span>{asset.width.toLocaleString()} × {asset.height.toLocaleString()} px</span><span>{zoomed ? 'Scroll to explore the artwork.' : 'Original artwork · Full resolution'}</span><span>ESC TO CLOSE</span></div>
   </dialog>;
 }

@@ -1,3 +1,4 @@
+import { ProjectArtwork } from './ProjectArtwork';
 import { ArrowUpRight, ArrowRight, Expand, ExternalLink, Check } from 'lucide-react';
 import type { PortfolioProject } from '../data/portfolioData';
 import { RouteLink } from './PortfolioPages';
@@ -256,5 +257,5 @@ export function WebDevTechnicalView({
 }
 
 export function ProjectOverview({ projects, navigate }: { projects: PortfolioProject[]; navigate: Navigate }) {
- return <div className="project-gallery project-overview">{projects.map((project,index)=><RouteLink className="project-card" key={project.id} to={`/projects/${project.id}`} navigate={navigate}><div className="project-image"><img src={project.image} alt={project.images?.[0]?.alt ?? project.title} width={project.images?.[0]?.width} height={project.images?.[0]?.height} loading="lazy" decoding="async" /><span className="project-index">{String(index+1).padStart(2,'0')}</span><span className="project-arrow"><ArrowUpRight size={22} /></span></div><div className="project-card-title"><h2>{project.title}</h2><span>{categoriesFor(project).join(' / ')}</span></div><p>{project.description}</p><div className="tags">{(project.tags ?? project.technologies).map(tag=><span key={tag}>{tag}</span>)}</div></RouteLink>)}</div>;
+ return <div className="project-gallery project-overview">{projects.map((project,index)=><RouteLink className="project-card" key={project.id} to={`/projects/${project.id}`} navigate={navigate}><div className="project-image">{project.images?.[0] ? <ProjectArtwork asset={project.images[0]} /> : <img src={project.image} alt={project.title} loading="lazy" />}<span className="project-index">{String(index+1).padStart(2,'0')}</span><span className="project-arrow"><ArrowUpRight size={22} /></span></div><div className="project-card-title"><h2>{project.title}</h2><span>{categoriesFor(project).join(' / ')}</span></div><p>{project.description}</p><div className="tags">{(project.tags ?? project.technologies).map(tag=><span key={tag}>{tag}</span>)}</div></RouteLink>)}</div>;
 }

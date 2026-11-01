@@ -97,3 +97,5 @@ html[data-theme=light] .artwork-toolbar p,html[data-theme=light] .artwork-contex
 html[data-theme=light] .artwork-context dd{color:var(--theme-fg)}
 html[data-theme=light] .artwork-controls :is(button,a){background:var(--theme-surface);color:var(--theme-fg);border-color:var(--theme-line)}
 html[data-theme=light] .artwork-stage{background:#18181b}
+html[data-theme=light] .artwork-grid figcaption{color:var(--reading)}
+html[data-theme=light] .artwork-grid figcaption>span{color:var(--theme-muted)}

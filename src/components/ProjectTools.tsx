@@ -3,6 +3,7 @@ const toolImages: Record<string, { src: string; className?: string }> = {
   Tiled: { src: assetPath('/assets/tools/tiled.png') },
   Canva: { src: assetPath('/assets/tools/canva-wordmark.svg'), className: 'project-tool-icon--canva' },
   Figma: { src: assetPath('/assets/tools/figma-color.svg') },
+  'AI (ideation only)': { src: assetPath('/assets/ai-tools/ai-design.png') },
   Photoshop: { src: assetPath('/assets/tools/photoshop.svg'), className: 'project-tool-icon--photoshop' },
   Picsart: { src: assetPath('/assets/tools/picsart.svg') },
   ibisPaint: { src: assetPath('/assets/tools/ibispaint.png') },

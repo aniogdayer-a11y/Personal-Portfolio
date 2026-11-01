@@ -24,13 +24,14 @@ export interface PortfolioProject {
   format?: string; overview?: string; approach?: string; tags?: string[];
   deliverables?: string[]; images?: ProjectImage[];
   tools?: string[]; // List confirmed design software here when available.
+  aiUsage?: string;
   year?: string;
   organization?: string;
   role?: string;
   features?: string[];
   video?: { src: string; webm?: string; poster: string; caption: string; kind: 'trailer' | 'teaser'; duration: string; width: number; height: number };
 }
-export interface ProjectImage { src: string; original: string; alt: string; label: string; width: number; height: number }
+export interface ProjectImage { src: string; original: string; alt: string; label: string; width: number; height: number; viewport?: { x: number; y: number; sourceWidth: number; sourceHeight: number } }
 export interface AiTool {
   id: string;
   name: string;
@@ -59,6 +60,14 @@ const zodiac = [
   designImage('zodiac-gemini-eventbridge', 'Gemini × Amazon EventBridge', 'Zodiac Says Gemini and Amazon EventBridge graphic using connected characters and a purple tarot-card layout', 1000, 1000, 'jpg'),
 ];
 const frames = designImage('bsit-student-frames', 'BSIT & BSIT-BA frame collection', 'Eight carnival-inspired student portrait frames arranged by BSIT and BSIT-BA year level, using Ferris wheels and admission-ticket lettering', 5875, 3189);
+// Show each original design separately without altering or re-exporting the supplied board.
+const studentFrames: ProjectImage[] = [[59,54],[451,54],[843,54],[1246,54],[54,519],[454,519],[852,519],[1252,519]].map(([x,y], index) => {
+  const program = index < 4 ? 'BSIT' : 'BSIT-BA';
+  const year = ['First year', 'Second year', 'Third year', 'Fourth year'][index % 4];
+  return { ...frames, label: `${program} · ${year}`, alt: `${program} ${year.toLowerCase()} profile frame with a carnival Ferris-wheel motif and a circular portrait space`, width: 1080, height: 1080, viewport: { x: Math.round(x / 1600 * 5875), y: Math.round(y / 868 * 3189), sourceWidth: 5875, sourceHeight: 3189 } };
+});
+const graphicDesignTools = ['Figma', 'AI (ideation only)'];
+const graphicDesignAiUsage = 'Design and layout were developed in Figma. AI supported brainstorming and concept exploration; the collection is not entirely AI-generated.';
 const flag = designImage('aws-sbg-flag', 'Organization flag artwork', 'AWS Student Builder Group flag artwork with a tiger mascot, gold claw marks, blue smoke, and university branding', 1102, 801);
 const countdown = designImage('tech-countdown', 'Five-day countdown poster', 'Purple technology-themed countdown poster with a phone displaying five days to come, floating keyboard keys, and event lighting', 1089, 1089);
 const boothPhoto: ProjectImage = {
@@ -110,7 +119,7 @@ export const work: PortfolioProject[] = [
     approach: "Motorsport imagery, condensed typography, and directional layouts establish a recognizable campaign identity. Consistent branding and information hierarchy connect each publication.",
     deliverables: ['General Assembly announcement', 'Registration reminder', 'Reloaded announcement'],
     tags: ['Event campaign', 'Publication design', 'Typography'], technologies: [], image: grandPrix[0].src, images: grandPrix, github: '', demo: '', status: '3 artworks', featured: false,
-    year: '2026', organization: 'AWS Student Builder Group — JRU', tools: ['Canva', 'Photoshop'],
+    year: '2026', organization: 'AWS Student Builder Group — JRU', tools: graphicDesignTools, aiUsage: graphicDesignAiUsage,
   },
   {
     id: 'aws-sbg-booth', title: 'AWS SBG — Recycled Booth', category: 'Graphic Design', format: 'Sustainable booth & event design',
@@ -119,7 +128,7 @@ export const work: PortfolioProject[] = [
     approach: "The team combined editorial layouts and organizational branding with a resource-conscious construction approach. Coordinated print materials helped visitors identify the chapter and explore its activities.",
     deliverables: ['Collaborative Creatives Team booth build', 'Custom posters and newspaper-inspired layouts', 'Organizational branding', 'Decorations using recyclable materials'],
     tags: ['Sustainable design', 'Event branding', 'Team collaboration'], technologies: [], image: boothPhoto.src, images: [boothPhoto], github: '', demo: '', status: 'Creatives Team project', featured: false,
-    role: 'Creatives Team Member', year: '2026', organization: 'AWS Student Builder Group — JRU', tools: ['Recyclable materials', 'Print design', 'Exhibition styling'],
+    role: 'Creatives Team Member', year: '2026', organization: 'AWS Student Builder Group — JRU', tools: graphicDesignTools, aiUsage: graphicDesignAiUsage,
   },
   {
     id: 'zodiac-says', title: 'Zodiac Says', category: 'Graphic Design', format: 'Social media design series',
@@ -128,7 +137,7 @@ export const work: PortfolioProject[] = [
     approach: "Purple-and-gold framing, illustrated compositions, and a consistent type hierarchy connect the series. Each graphic balances the service pairing with short, accessible supporting text.",
     deliverables: ['Cancer × Amazon S3 graphic', 'Sagittarius × AWS Amplify graphic', 'Gemini × Amazon EventBridge graphic'],
     tags: ['Social media', 'Visual storytelling', 'Series design'], technologies: [], image: zodiac[0].src, images: zodiac, github: '', demo: '', status: '3 artworks', featured: true,
-    year: '2026', organization: 'AWS Student Builder Group — JRU', tools: ['Canva', 'Photoshop'],
+    year: '2026', organization: 'AWS Student Builder Group — JRU', tools: graphicDesignTools, aiUsage: graphicDesignAiUsage,
   },
   {
     id: 'bsit-student-frames', title: 'BSIT & BSIT-BA Student Frames', category: 'Graphic Design', format: 'Student profile-frame collection',
@@ -136,8 +145,8 @@ export const work: PortfolioProject[] = [
     overview: "A student identity collection covering the first through fourth year of BSIT and BSIT-BA. Each frame reserves a clear portrait area while highlighting the program and year level.",
     approach: "A shared carnival theme connects the collection. Ferris-wheel motifs, admission-ticket details, and differentiated color palettes distinguish each year level within a consistent layout.",
     deliverables: ['Four BSIT year-level frame designs', 'Four BSIT-BA year-level frame designs', 'Combined design presentation board'],
-    tags: ['Profile frames', 'Student identity', 'Design system'], technologies: [], image: frames.src, images: [frames], github: '', demo: '', status: '8-frame design board', featured: false,
-    year: '2026', organization: 'José Rizal University', tools: ['Canva', 'Photoshop'],
+    tags: ['Profile frames', 'Student identity', 'Design system'], technologies: [], image: frames.src, images: studentFrames, github: '', demo: '', status: '8 profile frames', featured: false,
+    year: '2026', organization: 'José Rizal University', tools: graphicDesignTools, aiUsage: graphicDesignAiUsage,
   },
   {
     id: 'aws-sbg-flag', title: 'AWS SBG — Organization Flag', category: 'Graphic Design', format: 'Organization flag artwork',
@@ -146,7 +155,7 @@ export const work: PortfolioProject[] = [
     approach: "Blue and gold establish the palette, while the mascot and chapter heading provide the main visual anchors. Supporting graphics direct attention through the composition.",
     deliverables: ['Organization flag design'],
     tags: ['Organization identity', 'Mascot composition', 'Layout design'], technologies: [], image: flag.src, images: [flag], github: '', demo: '', status: 'Flag artwork', featured: false,
-    year: '2026', organization: 'AWS Student Builder Group — JRU', tools: ['Canva', 'Photoshop'],
+    year: '2026', organization: 'AWS Student Builder Group — JRU', tools: graphicDesignTools, aiUsage: graphicDesignAiUsage,
   },
   {
     id: 'tech-countdown', title: 'Five Days to Come', category: 'Graphic Design', format: 'Event countdown poster',
@@ -155,7 +164,7 @@ export const work: PortfolioProject[] = [
     approach: "The central numeral establishes the reading order. Layered keyboard elements, a limited palette, and supporting event details frame the message without competing with it.",
     deliverables: ['Five-day event countdown graphic'],
     tags: ['Countdown', 'Event promotion', 'Digital composition'], technologies: [], image: countdown.src, images: [countdown], github: '', demo: '', status: 'Countdown artwork', featured: false,
-    year: '2026', organization: 'AWS Student Builder Group — JRU', tools: ['Canva', 'Photoshop'],
+    year: '2026', organization: 'AWS Student Builder Group — JRU', tools: graphicDesignTools, aiUsage: graphicDesignAiUsage,
   },
 ];
 // Add only confirmed skills, certificates, and experiences.
