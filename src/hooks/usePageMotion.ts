@@ -21,14 +21,14 @@ export function usePageMotion(root: RefObject<HTMLElement | null>, route: string
     }), { threshold: 0.12, rootMargin: '0px 0px -20px 0px' });
     const collect = () => {
       element.querySelectorAll<HTMLElement>(revealTargets).forEach(target => {
-        if (observed.has(target)) return;
+        if (observed.has(target) || target.closest('[data-section="home"]')) return;
         observed.add(target);
         target.dataset.reveal = 'pending';
         observer.observe(target);
       });
       element.querySelectorAll<HTMLElement>(textTargets).forEach(target => {
         // Leave live controls, artwork captions, and modal content immediately readable.
-        if (textObserved.has(target) || target.closest('dialog,button,.showcase-card,[aria-live],.project-video,.edufocus-teaser-player')) return;
+        if (textObserved.has(target) || target.closest('[data-section="home"],dialog,button,.showcase-card,[aria-live],.project-video,.edufocus-teaser-player')) return;
         textObserved.add(target);
         target.dataset.textReveal = 'pending';
         const delay = target.matches('.eyebrow') ? 0 : target.matches('.motion-title,h2,h3') ? 70 : 150;

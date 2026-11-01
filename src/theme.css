@@ -75,6 +75,7 @@ html[data-theme=light] .webdev-visit-badge{background:#fff;color:#18181b}
 html[data-theme=light] :is(.uiux-inspect-button,.uiux-live-button):hover{color:#18181b}
 html[data-theme=light] :is(.credential-gallery article,.empty-state,.resume-pending>span){background:var(--theme-surface);border-color:var(--theme-line);color:var(--theme-muted)}
 html[data-theme=light] .credential-gallery .credential-artwork{background:radial-gradient(ellipse at center,#fff,#e8e8e4)}
+html[data-theme=light] .credentials-page .credential-gallery article,html[data-theme=light] .credentials-page .credential-gallery .credential-artwork{background:transparent}
 html[data-theme=light] .credential-gallery .credential-copy h2{color:var(--theme-fg)}
 html[data-theme=light] .credential-dates dt{color:var(--theme-muted)}
 html[data-theme=light] .credential-dates :is(dd,time){color:var(--theme-fg)}

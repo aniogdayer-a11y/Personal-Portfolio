@@ -184,10 +184,39 @@ export const skillGroups: { category: string; description: string; skills: strin
 export const credlyProfile = 'https://www.credly.com/users/dayer-aniog/badges';
 export interface PortfolioCredential {
   id: string; title: string; issuer: string; date: string; image: string;
-  verify: string; type: 'Certificate' | 'Badge'; description: string; expires?: string;
+  verify?: string; type: 'Certificate' | 'Badge'; description: string; expires?: string;
+  document?: string; credentialId?: string; label?: string; imageWidth?: number; imageHeight?: number;
+  artworkKind?: 'document' | 'badge';
 }
-// Confirmed against the public Credly profile; see docs/credential-sources.json.
+// Public Credly records and user-provided originals; see docs/credentials.md.
 export const certificates: PortfolioCredential[] = [
+  {
+    id: 'huawei-data-communication-network-technology',
+    title: 'Data Communication and Network Technology', issuer: 'Huawei ICT Academy',
+    date: '2026-10-05', type: 'Certificate', label: 'Course completion', artworkKind: 'document',
+    image: assetPath('/assets/credentials/huawei/data-communication-network-technology.png'),
+    document: assetPath('/assets/credentials/huawei/data-communication-network-technology.png'),
+    imageWidth: 2480, imageHeight: 3507, credentialId: 'ICT20261005000035',
+    description: 'Completed the course study and assessment in data communication and network technology through Huawei ICT Academy.',
+  },
+  {
+    id: 'mapua-ai-literacy-responsible-use',
+    title: 'Introduction to AI Literacy and Responsible Use', issuer: 'Mapúa University',
+    date: '2026-09-14', type: 'Certificate', label: 'Micro-credential certificate', artworkKind: 'document',
+    image: assetPath('/assets/credentials/mapua/ai-literacy-responsible-use-certificate.png'),
+    document: assetPath('/assets/credentials/mapua/ai-literacy-responsible-use-certificate.pdf'),
+    imageWidth: 2105, imageHeight: 1490, credentialId: 'BJ4VBOPK5OX7A',
+    description: 'Certificate of completion for the micro-credential course in AI literacy and responsible use.',
+  },
+  {
+    id: 'mapua-ai-literacy-responsible-use-badge',
+    title: 'Introduction to AI Literacy and Responsible Use', issuer: 'Mapúa University',
+    date: '2026-09-14', type: 'Badge', label: 'Digital badge', artworkKind: 'badge',
+    image: assetPath('/assets/credentials/mapua/ai-literacy-responsible-use-badge.png'),
+    document: assetPath('/assets/credentials/mapua/ai-literacy-responsible-use-badge.png'),
+    imageWidth: 798, imageHeight: 668,
+    description: 'Digital badge for the Introduction to AI Literacy and Responsible Use micro-credential, provided by Mapúa University.',
+  },
   {
     id: '9be7fe4f-ac72-4637-bc3c-bc962a1eb9ed', title: 'JavaScript Essentials 1', issuer: 'Cisco',
     date: '2026-08-07', type: 'Badge',
@@ -206,6 +235,7 @@ export const certificates: PortfolioCredential[] = [
     id: 'cb0ae71a-cd75-443f-91fc-e628852e7547', title: 'IT Specialist - Databases', issuer: 'Certiport, a Pearson VUE business',
     date: '2026-05-06', expires: '2031-05-06', type: 'Certificate',
     image: assetPath('/assets/credentials/cb0ae71a-cd75-443f-91fc-e628852e7547.png'),
+    imageWidth: 1200, imageHeight: 1200,
     verify: 'https://www.credly.com/badges/cb0ae71a-cd75-443f-91fc-e628852e7547/public_url',
     description: 'Foundational knowledge of designing and querying relational databases.',
   },

@@ -13,3 +13,19 @@ The database credential is categorized as a certification because Credly's templ
 `credential-sources.json` records source URLs, badge IDs, dates, visibility/state, image URLs, file hashes, and the UTC check time. Each individual public verification URL returned HTTP 200 and included the matching credential title. Official PNG badge images are stored locally under `public/assets/credentials/` without alteration, so the gallery does not depend on third-party image requests. Credential data is a checked snapshot, not a live validity-status service.
 
 Update confirmed metadata in `src/data/portfolioData.ts` when new credentials are earned or their records change. The page includes a public profile link, type filters, issue/expiry dates, and per-credential verification links. The profile's account-edit URL is never published in the portfolio.
+
+## User-provided course credentials
+
+The `BADGES AND CERTIFICATIONS` folder supplied by the owner adds two credentials:
+
+| Credential | Issuer | Issued | Evidence |
+| --- | --- | --- | --- |
+| Data Communication and Network Technology | Huawei ICT Academy | 2026-10-05 | Original PNG certificate of course completion |
+| Introduction to AI Literacy and Responsible Use — Certificate | Mapúa University | 2026-09-14 | Original PDF completion certificate, with a rendered PNG preview |
+| Introduction to AI Literacy and Responsible Use — Badge | Mapúa University | 2026-09-14 | Original PNG digital badge |
+
+As requested by the owner, Mapúa's certificate and badge are separate entries: the certificate appears only in Certificates, and the badge only in Badges. There are six displayed records: three certificates and three badges. The certificate preview is rendered from the original PDF at 180 dpi, with every printed detail preserved and the original PDF linked. The badge's empty outer canvas is masked in the gallery using an SVG outline, without modifying the source PNG or the printed artwork. Gallery backgrounds behind documents and badges are transparent in both color themes; white certificate paper is retained.
+
+The Huawei document is described as course completion, in accordance with the note printed on the certificate. These entries link to the supplied certificate documents; they do not claim independent online verification. Existing public Credly verification links are retained.
+
+Original files are copied without alteration into issuer folders under `public/assets/credentials/`. Source filenames, document dates, credential IDs, and file hashes are recorded in `local-credential-sources.json`. The gallery lists the newest credentials first, with credential-type and issuer filters; artwork previews retain full resolution.

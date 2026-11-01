@@ -3,7 +3,7 @@ import { MotionText } from './MotionText';
 import { useState } from 'react';
 import type { MouseEvent, ReactNode } from 'react';
 import { ArrowUpRight, ArrowRight, Mail, GraduationCap, MapPin, FileText, Clock3, Code2, Award, Check, Copy, Search, ExternalLink } from 'lucide-react';
-import { portfolio, work, skillGroups, certificates, credlyProfile, milestones, type PortfolioProject, education } from '../data/portfolioData';
+import { portfolio, work, skillGroups, certificates, credlyProfile, milestones, type PortfolioProject, type PortfolioCredential, education } from '../data/portfolioData';
 import { ProjectVisual } from './ProjectVisual';
 import { ProjectOverview, UiUxStudioView, WebDevTechnicalView } from './ProjectCategoryViews';
 import { projectCategories, filterProjects } from '../utils/projectCatalog';
@@ -13,6 +13,7 @@ import { ProjectDetail } from './ProjectDetail';
 import { GraphicDesignShowcase } from './GraphicDesignShowcase';
 import { CreativePortrait, CreativeToolkit } from './CreativeTools';
 import { ArtworkViewer } from './ArtworkViewer';
+import { CredentialImage } from './CredentialImage';
 
 export type Navigate = (path: string) => void;
 function TechnologyIcon({ name }: { name: string }) {
@@ -41,15 +42,15 @@ function PageHeading({ number, label, title, children }: { number: string; label
 function EmptyState({ icon, title, children }: { icon: ReactNode; title: string; children: ReactNode }) {
   return <div className="empty-state"><span className="empty-icon">{icon}</span><h2>{title}</h2><p>{children}</p><span className="small-label">PORTFOLIO COLLECTION</span></div>;
 }
-export function ProfilePage({ navigate }: { navigate: Navigate }) {
+export function ProfilePage({ navigate, compact = false }: { navigate: Navigate; compact?: boolean }) {
   return <>
     <section className="profile-hero" data-parallax-scene>
       <div className="profile-text"><span className="eyebrow"><i /> DESIGNER & DEVELOPER / PHILIPPINES</span><h1><MotionText>Hi, I’m Dayer<span className="period">.</span><br /><span className="subtle-title">Designing ideas.<br />Building experiences.</span></MotionText></h1><div className="profile-disciplines"><span>Front-End Development</span><span>UI/UX</span><span>Graphic Design</span></div><p className="intro-description">{portfolio.intro}</p><div className="hero-actions"><RouteLink className="button button-dark" to="/projects" navigate={navigate}>View selected projects <ArrowUpRight size={18} /></RouteLink></div><div className="hero-caption"><span className="status-dot" /> COLLEGE STUDENT <span className="caption-separator">/</span> SCROLL TO EXPLORE</div></div>
       <div className="profile-visual profile-visual--blend"><CreativePortrait><Portrait className="profile-portrait profile-portrait--blend" /></CreativePortrait></div>
     </section>
     <section className="about-editorial"><div><span className="eyebrow">PROFILE</span><h2>Design and<br /> development.</h2></div><div className="about-story"><p>{portfolio.about}</p><SocialLinks labeled /></div><div className="education-note"><GraduationCap size={24} strokeWidth={1.5} /><span className="small-label">EDUCATION</span><ol className="education-history">{education.map(item => <li key={item.school}><h3>{item.school}</h3><p className="education-period">{item.period}</p>{item.location && <><p>{item.course}</p><span className="education-location"><MapPin size={13} /> {item.location}</span></>}</li>)}</ol><ResumeLink /></div></section>
-    <CreativeToolkit />
-    <section className="featured-section"><div className="section-title"><div><span className="eyebrow">SELECTED PROJECTS</span><h2>Design in practice<span className="period">.</span></h2></div><RouteLink to="/projects" navigate={navigate} className="text-link">All projects <ArrowUpRight size={17} /></RouteLink></div>{work.filter(p => p.featured).map(p => <RouteLink className="featured-project" key={p.id} to={`/projects/${p.id}`} navigate={navigate}><ProjectVisual src={p.image} alt={p.images?.[0]?.alt ?? `${p.title} preview`} /><div><span className="small-label">{p.category} / {p.status}</span><h3>{p.title}</h3><p>{p.description}</p><div className="tags">{(p.tags ?? p.technologies).map(t => <span key={t}>{t}</span>)}</div><span className="project-open">Explore the project <ArrowUpRight size={18} /></span></div></RouteLink>)}</section>
+    {!compact && <><CreativeToolkit />
+    <section className="featured-section"><div className="section-title"><div><span className="eyebrow">SELECTED PROJECTS</span><h2>Design in practice<span className="period">.</span></h2></div><RouteLink to="/projects" navigate={navigate} className="text-link">All projects <ArrowUpRight size={17} /></RouteLink></div>{work.filter(p => p.featured).map(p => <RouteLink className="featured-project" key={p.id} to={`/projects/${p.id}`} navigate={navigate}><ProjectVisual src={p.image} alt={p.images?.[0]?.alt ?? `${p.title} preview`} /><div><span className="small-label">{p.category} / {p.status}</span><h3>{p.title}</h3><p>{p.description}</p><div className="tags">{(p.tags ?? p.technologies).map(t => <span key={t}>{t}</span>)}</div><span className="project-open">Explore the project <ArrowUpRight size={18} /></span></div></RouteLink>)}</section></>}
   </>;
 }
 
@@ -203,16 +204,28 @@ export function SkillsPage() {
 const credentialDate = (value: string) => new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${value}T00:00:00Z`));
 export function CertificationsPage() {
   const [filter, setFilter] = useState('All');
-  const shown = certificates.filter(c => filter === 'All' || c.type === filter);
-  return <div className="content-page">
-    <PageHeading number="04" label="CERTIFICATIONS & BADGES" title="Certifications & badges">Verified credentials in programming and databases, with issuer details and verification links.</PageHeading>
-    <div className="credential-toolbar"><div className="filter-tabs" role="group" aria-label="Filter credentials">{['All', 'Certificate', 'Badge'].map(type => <button key={type} onClick={() => setFilter(type)} aria-pressed={filter === type} className={filter === type ? 'active' : ''}>{type === 'All' ? 'All credentials' : type === 'Certificate' ? 'Certifications' : 'Badges'} <span className="filter-count">{type === 'All' ? certificates.length : certificates.filter(c => c.type === type).length}</span></button>)}</div><a className="text-link" href={credlyProfile} target="_blank" rel="noopener noreferrer">Credly profile <ArrowUpRight size={16} /></a></div>
-    {shown.length ? <div className="certificate-grid credential-gallery">{shown.map(credential => <article key={credential.id}>
-      <a className="credential-artwork" href={credential.verify} target="_blank" rel="noopener noreferrer" aria-label={`View ${credential.title} on Credly`}><img data-parallax="0.055" src={credential.image} alt={`${credential.title} official badge`} width="600" height="600" loading="lazy" decoding="async" /><span><ArrowUpRight size={18} /></span></a>
-      <div className="credential-copy"><span className="small-label">{credential.type === 'Certificate' ? 'CERTIFICATION' : 'DIGITAL BADGE'}</span><h2>{credential.title}</h2><p className="credential-issuer">{credential.issuer}</p><p className="credential-description">{credential.description}</p>
-      <dl className="credential-dates"><div><dt>Issued</dt><dd><time dateTime={credential.date}>{credentialDate(credential.date)}</time></dd></div>{credential.expires && <div><dt>Expires</dt><dd><time dateTime={credential.expires}>{credentialDate(credential.expires)}</time></dd></div>}</dl>
-      <a href={credential.verify} target="_blank" rel="noopener noreferrer" className="text-link">Verify on Credly <ExternalLink size={14} /></a></div>
-    </article>)}</div> : <EmptyState icon={<Award size={28} />} title="No credentials in this category">No {filter === 'Certificate' ? 'certifications' : 'badges'} have been published yet.</EmptyState>}
+  const [issuer, setIssuer] = useState('All issuers');
+  const [preview, setPreview] = useState<PortfolioCredential | null>(null);
+  const issuers = [...new Set(certificates.map(c => c.issuer))].sort((a, b) => a.localeCompare(b));
+  const matchingIssuer = certificates.filter(c => issuer === 'All issuers' || c.issuer === issuer);
+  const matchesType = (credential: PortfolioCredential, type: string) => type === 'All' || credential.type === type;
+  const shown = matchingIssuer.filter(c => matchesType(c, filter))
+    .sort((a, b) => b.date.localeCompare(a.date) || a.issuer.localeCompare(b.issuer) || a.title.localeCompare(b.title));
+  return <div className="content-page credentials-page">
+    <PageHeading number="04" label="CERTIFICATIONS & BADGES" title="Certifications & badges">Course certificates, micro-credentials, and digital badges in programming, networking, databases, and responsible AI use.</PageHeading>
+    <div className="credential-toolbar">
+      <div className="filter-tabs" role="group" aria-label="Filter credentials">{['All', 'Certificate', 'Badge'].map(type => <button key={type} onClick={() => setFilter(type)} aria-pressed={filter === type} className={filter === type ? 'active' : ''}>{type === 'All' ? 'All credentials' : type === 'Certificate' ? 'Certificates' : 'Badges'} <span className="filter-count">{matchingIssuer.filter(c => matchesType(c, type)).length}</span></button>)}</div>
+      <label className="credential-issuer-filter"><span className="sr-only">Filter by issuer</span><select value={issuer} onChange={event => setIssuer(event.target.value)}><option>All issuers</option>{issuers.map(name => <option key={name}>{name}</option>)}</select></label>
+      <a className="text-link" href={credlyProfile} target="_blank" rel="noopener noreferrer">Credly profile <ArrowUpRight size={16} /></a>
+    </div>
+    <div className="credential-summary"><span role="status">{shown.length} {shown.length === 1 ? 'credential' : 'credentials'}</span><span>Newest first</span></div>
+    {shown.length ? <div className="certificate-grid credential-gallery">{shown.map(credential => <article key={credential.id} data-credential={credential.id}>
+      <button type="button" className={`credential-artwork${credential.artworkKind === 'document' ? ' credential-artwork--document' : ''}`} onClick={() => setPreview(credential)} aria-label={`Preview ${credential.title}`}><CredentialImage credential={credential} /><span><Search size={18} /></span></button>
+      <div className="credential-copy"><span className="small-label">{credential.label ?? (credential.type === 'Certificate' ? 'Certification' : 'Digital badge')}</span><h2>{credential.title}</h2><p className="credential-issuer">{credential.issuer}</p><p className="credential-description">{credential.description}</p>
+      <dl className="credential-dates"><div><dt>Issued</dt><dd><time dateTime={credential.date}>{credentialDate(credential.date)}</time></dd></div>{credential.expires && <div><dt>Expires</dt><dd><time dateTime={credential.expires}>{credentialDate(credential.expires)}</time></dd></div>}{credential.credentialId && <div className="credential-id"><dt>Credential ID</dt><dd>{credential.credentialId}</dd></div>}</dl>
+      {credential.verify ? <a href={credential.verify} target="_blank" rel="noopener noreferrer" className="text-link">Verify on Credly <ExternalLink size={14} /></a> : credential.document ? <a href={credential.document} target="_blank" rel="noopener noreferrer" className="text-link">{credential.type === 'Badge' ? 'View badge' : 'View certificate'}{credential.document.endsWith('.pdf') ? ' (PDF)' : ''} <ExternalLink size={14} /></a> : null}</div>
+    </article>)}</div> : <EmptyState icon={<Award size={28} />} title="No matching credentials">Choose another issuer or credential type.</EmptyState>}
+    {preview && <ArtworkViewer images={[{ src: preview.image, original: preview.image, alt: preview.title, label: preview.issuer, width: preview.imageWidth ?? 600, height: preview.imageHeight ?? 600 }]} initialIndex={0} title={preview.title} onClose={() => setPreview(null)} />}
   </div>;
 }
 export function ExperiencePage() {

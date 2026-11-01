@@ -12,6 +12,19 @@ export function useSmoothScroll(route: string) {
       scroll.scrollTo(0, { immediate: true, force: true });
     } else window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
+  const scrollTo = useCallback((target: HTMLElement, smooth = true, offset = 0) => {
+    const animate = smooth && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const scroll = instance.current;
+    if (scroll) {
+      scroll.resize();
+      const destination = target.getBoundingClientRect().top + window.scrollY + offset;
+      const distance = Math.abs(destination - window.scrollY);
+      scroll.scrollTo(destination, { immediate: !animate, duration: Math.min(1.45, .7 + distance / 10000), force: true,
+        // Zero velocity and acceleration at either end prevent a sudden launch
+        // when a navbar link crosses several sections of the long page.
+        easing: t => t * t * t * (t * (t * 6 - 15) + 10) });
+    } else window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY + offset, behavior: animate ? 'smooth' : 'instant' });
+  }, []);
 
   useLayoutEffect(() => {
     const previousRestoration = history.scrollRestoration;
@@ -63,5 +76,5 @@ export function useSmoothScroll(route: string) {
   }, []);
 
   useLayoutEffect(resetScroll, [route, resetScroll]);
-  return resetScroll;
+  return { resetScroll, scrollTo };
 }

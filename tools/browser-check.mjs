@@ -11,10 +11,16 @@ ws.onmessage = event => { const msg = JSON.parse(event.data); if (msg.id) { cons
 const cdp = (method, params = {}) => new Promise((resolve, reject) => { const id = ++serial; pending.set(id, { resolve, reject }); ws.send(JSON.stringify({ id, method, params })); });
 const evaluate = async expression => { const result = await cdp('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }); if (result.exceptionDetails) throw new Error(JSON.stringify(result.exceptionDetails)); return result.result.value; };
 const base = 'http://127.0.0.1:5173';
-async function navigate(path) { await cdp('Page.navigate', { url: base + path }); await sleep(700); await evaluate('document.fonts.ready'); }
-async function click(selector) { const r = await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw new Error('Missing '+${JSON.stringify(selector)});e.scrollIntoView({block:'center',behavior:'instant'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`); await mouse('mousePressed', r.x, r.y); await mouse('mouseReleased', r.x, r.y); await sleep(150); }
+async function dismissOpening() {
+  if (!await evaluate('!!document.querySelector(".home-loader")')) return;
+  await evaluate('document.querySelector(".loader-bottom button")?.click()');
+  for (let i = 0; i < 40; i++) { if (!await evaluate('!!document.querySelector(".home-loader")')) return; await sleep(50); }
+  throw new Error('Home intro did not release the interface');
+}
+async function navigate(path) { await cdp('Page.navigate', { url: base + path }); await sleep(700); await evaluate('document.fonts.ready'); await dismissOpening(); }
+async function click(selector) { await dismissOpening(); const r = await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)throw new Error('Missing '+${JSON.stringify(selector)});e.scrollIntoView({block:'center',behavior:'instant'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`); await mouse('mousePressed', r.x, r.y); await mouse('mouseReleased', r.x, r.y); await sleep(150); }
 let mouseDown = false;
-async function mouse(type, x, y) { if (type === 'mousePressed') mouseDown = true; if (type === 'mouseReleased') mouseDown = false; await cdp('Input.dispatchMouseEvent', { type, x, y, button: type === 'mouseMoved' ? 'none' : 'left', buttons: mouseDown ? 1 : 0, clickCount: 1 }); }
+async function mouse(type, x, y) { if (type === 'mousePressed') mouseDown = true; if (type === 'mouseReleased') mouseDown = false; await cdp('Input.dispatchMouseEvent', { type, x, y, button: mouseDown ? 'left' : type === 'mouseMoved' ? 'none' : 'left', buttons: mouseDown ? 1 : 0, clickCount: 1 }); }
 async function cardCenter() { return evaluate(`(()=>{const r=document.querySelector('.actual-id').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height*.55}})()`); }
 async function drag(dx, dy, release = true) { const p = await cardCenter(); await mouse('mouseMoved', p.x, p.y); await mouse('mousePressed', p.x, p.y); for (let i = 1; i <= 15; i++) { await mouse('mouseMoved', p.x + dx*i/15, p.y + dy*i/15); await sleep(20); } await sleep(300); if (release) await mouse('mouseReleased', p.x+dx, p.y+dy); return p; }
 async function capture(name) { const result = await cdp('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false }); await writeFile(`tmp/qa/${name}.png`, Buffer.from(result.data, 'base64')); }
@@ -37,11 +43,11 @@ try {
   const connected = await evaluate(`(()=>{const s=document.querySelector('.lanyard-canvas g:last-child').getScreenCTM();const r=document.querySelector('.lanyard-canvas g:last-child rect');const p=new DOMPoint(0,+r.getAttribute('height')).matrixTransform(s);const b=document.querySelector('.id-hardware').getBoundingClientRect();return Math.hypot(p.x-(b.x+b.width/2),p.y-b.y)})()`);
   assert.ok(connected < 22, `Strap should terminate at the buckle (distance ${connected})`);
   const p = await cardCenter(); await mouse('mouseReleased', p.x, p.y); await sleep(1400);
-  assert.equal(await evaluate('location.pathname'), '/about'); assert.equal(await evaluate('document.querySelector("h1").textContent.includes("Dayer")'), true);
+  assert.equal(await evaluate('location.pathname'), '/', 'Pull remains interactive without navigation'); await click('.intro-copy button'); await sleep(1400); assert.equal(await evaluate('location.pathname'), '/about');
   await capture('profile-desktop'); await noOverflow('Desktop profile');
   for (const route of ['/projects','/skills','/certifications','/experience','/contact']) {
-    await click(`.site-nav a[href="${route}"]`); assert.equal(await evaluate('location.pathname'), route); await noOverflow(route);
-    assert.equal(await evaluate('document.querySelectorAll(".identity-intro").length'), 0);
+    await click(`.site-nav a[href="${route}"]`); await sleep(1400); assert.equal(await evaluate('location.pathname'), route); await noOverflow(route);
+    assert.equal(await evaluate('document.querySelectorAll(".identity-intro").length'), 1);
     assert.ok(await evaluate('document.querySelector(".site-nav a[aria-current=page]").getAttribute("href") === location.pathname'));
   }
   await capture('contact-desktop');
@@ -50,13 +56,13 @@ try {
   await navigate('/projects/edufocus'); assert.ok(await evaluate('!!document.querySelector(".detail-preview")'));
   await navigate('/does-not-exist'); assert.ok(await evaluate('document.body.textContent.includes("Page unavailable")'));
   // Direct links enter immediately, independently of intro session state.
-  await evaluate('sessionStorage.clear()'); await navigate('/skills'); assert.equal(await evaluate('document.querySelectorAll(".identity-intro").length'), 0);
+  await evaluate('sessionStorage.clear()'); await navigate('/skills'); assert.equal(await evaluate('document.querySelectorAll(".identity-intro").length'), 1);
   await cdp('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   await cdp('Emulation.setTouchEmulationEnabled', { enabled: true });
   await navigate('/about'); await noOverflow('Mobile profile'); await capture('profile-mobile');
   await click('.mobile-menu-button'); assert.equal(await evaluate('document.querySelector(".mobile-menu-button").getAttribute("aria-expanded")'), 'true');
-  await click('.site-nav a[href="/contact"]'); assert.equal(await evaluate('location.pathname'), '/contact'); assert.equal(await evaluate('document.querySelector(".mobile-menu-button").getAttribute("aria-expanded")'), 'false');
-  assert.equal(await evaluate('window.scrollY'), 0, 'Navigation reveals header and top of the new page');
+  await click('.site-nav a[href="/contact"]'); await sleep(1400); assert.equal(await evaluate('location.pathname'), '/contact'); assert.equal(await evaluate('document.querySelector(".mobile-menu-button").getAttribute("aria-expanded")'), 'false');
+  assert.ok(await evaluate('Math.abs(document.getElementById("contact").getBoundingClientRect().top-document.querySelector(".site-header").getBoundingClientRect().bottom)<8'), 'Section aligns below header');
   await noOverflow('Mobile contact'); await capture('contact-mobile');
   for (const route of ['/projects','/skills','/certifications','/experience']) { await navigate(route); await noOverflow(`Mobile ${route}`); }
   await evaluate('sessionStorage.clear()'); await navigate('/'); await capture('intro-mobile'); await noOverflow('Mobile intro');
@@ -70,7 +76,7 @@ try {
   await cdp('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: touch.x, y: touch.y }] });
   for (let i = 1; i <= 15; i++) { await cdp('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: touch.x, y: touch.y + i*12 }] }); await sleep(20); }
   await sleep(300); await cdp('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); await sleep(1400);
-  assert.equal(await evaluate('location.pathname'), '/about', 'Touch pull enters profile');
+  assert.equal(await evaluate('location.pathname'), '/', 'Touch pull stays on Home');
   await cdp('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   await evaluate('sessionStorage.clear()'); await navigate('/');
   assert.equal(await evaluate('matchMedia("(prefers-reduced-motion: reduce)").matches'), true);
@@ -83,13 +89,13 @@ try {
   await evaluate('document.querySelector(".id-assembly").focus()');
   await cdp('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 });
   await cdp('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 }); await sleep(1400);
-  assert.equal(await evaluate('location.pathname'), '/about', 'Keyboard entry with automatic effects');
+  assert.equal(await evaluate('location.pathname'), '/', 'Keyboard swings ID without navigating');
   assert.equal(await evaluate('document.querySelector(".replay-button")'), null, 'Header reset is removed');
   await click('.mobile-menu-button');
   await click('.site-nav a[href="/home"]'); await sleep(250);
-  assert.equal(await evaluate('location.pathname'), '/home', 'Explicit Home access replays the interaction');
+  assert.equal(await evaluate('location.pathname'), '/home', 'Explicit Home scrolls back to the introduction');
   await click('.intro-copy button'); await sleep(1400);
   assert.equal(await evaluate('location.pathname'), '/about', 'About Me button provides accessible entry');
   assert.deepEqual(errors, []);
-  console.log('PASS: asset dimensions, connected strap, constrained drag, threshold and release, recoil and entry, six routes, history, direct links, details, 404, desktop/mobile layout, touch, keyboard, automatic effects and theme switching, no runtime exceptions.');
+  console.log('PASS: asset dimensions, connected strap, constrained drag, threshold and release, recoil without navigation, continuous sections, history, direct links, details, 404, desktop/mobile layout, touch, keyboard, automatic effects and theme switching, no runtime exceptions.');
 } finally { ws.close(); }
